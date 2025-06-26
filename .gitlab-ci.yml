@@ -1,3 +1,24 @@
+stages:
+  - build
+  - test
+  - deploy
+  - e2e
+
+cypress-e2e:
+  stage: e2e
+  image: cypress/browsers:latest
+  script:
+    - npm install
+    - npm run dev & npx wait-on http://localhost:5173
+    - npm run cypress:run
+  artifacts:
+    paths:
+      - cypress/videos/
+      - cypress/screenshots/
+  only:
+    - main
+    - merge_requests
+
 build-job:
   stage: build
   script:
